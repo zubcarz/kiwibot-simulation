@@ -1,0 +1,28 @@
+{
+  "name": "kiwibot",
+  "version": "1.0.0",
+  "description": "Services api Kiwibot-Simulation",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zubcarz/kiwibot-simulation.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "autenticate"
+  ],
+  "author": "zubcarz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zubcarz/kiwibot-simulation/issues"
+  },
+  "homepage": "https://github.com/zubcarz/kiwibot-simulation#readme",
+  "dependencies": {
+    "node-persist": "^2.1.0"
+  }
+}
