@@ -1,10 +1,9 @@
 console.log("!!Node Start¡¡");
-/*var storage = require("node-persist");
+var crypto = require("crypto-js");
+var secretKey = "KiwiBots17";
 
-storage.initSyns();
+var encryptedMessage = crypto.AES.encrypt("Carlos Zubieta",secretKey);
+console.log("Encrypted Messaje :" + encryptedMessage);
 
-storage.setItemSync('name','Carlos');
-
-var name = storage.getItemSync("name");
-console.log("Name Save:" + name);
-*/
+var decryptedMessage = crypto.AES.decrypt(encryptedMessage,secretKey);
+console.log("Decrypted Messaje :" + decryptedMessage.toString(crypto.enc.Utf8));
