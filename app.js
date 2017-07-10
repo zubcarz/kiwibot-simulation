@@ -7,3 +7,4 @@ console.log("Encrypted Messaje :" + encryptedMessage);
 
 var decryptedMessage = crypto.AES.decrypt(encryptedMessage,secretKey);
 console.log("Decrypted Messaje :" + decryptedMessage.toString(crypto.enc.Utf8));
+ 
