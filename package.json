@@ -1,5 +1,5 @@
 {
-  "name": "kiwibot",
+  "name": "kiwibot-simulation",
   "version": "1.0.0",
   "description": "Services api Kiwibot-Simulation",
   "main": "index.js",
@@ -14,7 +14,8 @@
   "keywords": [
     "node",
     "express",
-    "autenticate"
+    "autenticate",
+    "heroku"
   ],
   "author": "zubcarz",
   "license": "MIT",
@@ -23,8 +24,13 @@
   },
   "homepage": "https://github.com/zubcarz/kiwibot-simulation#readme",
   "dependencies": {
+    "assert": "^1.4.1",
+    "body-parser": "^1.17.2",
+    "consolidate": "^0.14.5",
     "crypto-js": "^3.1.9-1",
     "express": "^4.15.3",
-    "node-persist": "^2.1.0"
+    "mongodb": "^2.2.30",
+    "node-persist": "^2.1.0",
+    "validator": "^8.0.0"
   }
 }

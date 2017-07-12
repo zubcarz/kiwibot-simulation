@@ -1,0 +1,18 @@
+{
+    "name": "kiwibot-simulation",
+    "version": "1.0.0",
+    "description": "API kiwibot-simulation",
+    "template": {
+        "forceLanguage": "en"
+    },
+    "kiwibot-simulation": {
+      "title": "Kiwibot-simulation API",
+      "url" : "https://github.com/zubcarz/kiwibot-simulation"
+    },
+    "header": {
+      "title": "Kiwibot-simulation API"
+    },
+    "footer": {
+      "title": "zubcarz@gmail.com"
+    }
+}
