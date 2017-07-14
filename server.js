@@ -171,11 +171,19 @@ MongoClient.connect(
      * @apiParam {String} email email
      * @apiParam {String} password password
      * @apiParam {String} confirmPassword Confirm password
-     * @apiSuccess {id} _id id
+     * @apiSuccess {string} _id id
+     * @apiSuccess {users[]} user list user
+     * @apiSuccess {String} user.name personal name of the user
+     * @apiSuccess {String} user.nickname nickname of the user
      * @apiSuccessExample {json} Success
      *    HTTP/1.1 200 OK
      *    {
-     *      "_id":"741253876126301273asd"
+     *      "_id":"2342341231da12313",
+     *      "user":{
+     *          "name":"Carlos Zubieta",
+     *          "nickname":"zubcarz",
+     *          "email":"zubcarz@gmail.com"
+     *      }
      *     }
      * @apiErrorExample {json} List error
      *    HTTP/1.1 500 Internal Server Error
@@ -281,17 +289,20 @@ MongoClient.connect(
      * @apiGroup USER
      * @apiParam {String} password password
      * @apiParam {String} email email
+     * @apiSuccess {string} _id id
      * @apiSuccess {users[]} user list user
      * @apiSuccess {String} user.name personal name of the user
      * @apiSuccess {String} user.nickname nickname of the user
      * @apiSuccessExample {json} Success
      *    HTTP/1.1 200 OK
-     *    [
+     *    {
+     *      "_id":"2342341231da12313",
      *      "user":{
      *          "name":"Carlos Zubieta",
      *          "nickname":"zubcarz",
      *          "email":"zubcarz@gmail.com"
-     *      }]
+     *      }
+     *     }
      * @apiErrorExample {json} List error
      *    HTTP/1.1 500 Internal Server Error
      */
