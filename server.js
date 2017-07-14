@@ -297,7 +297,7 @@ MongoClient.connect(
      */
     app.post('/kiwibot-simulation/user/login', function (request,response) {
       var email = request.body.email;
-      var password = crypto.HmacSHA1(request.body.password, keyValue);
+      var password = crypto.HmacSHA1(request.body.password, keyValue).toString();
       var projection = {"_id":1,"user.email":1,"user.nickname":1,"user.name":1};
       var querry = {"user.email":email,"user.password" :password };
       var cursor =  db.collection('Users').find(querry,projection);
@@ -305,6 +305,7 @@ MongoClient.connect(
       cursor.toArray(function(err, docs) {
              assert.equal(null,err);
              response.send(docs);
+             console.log(password);
        });
 
     });
