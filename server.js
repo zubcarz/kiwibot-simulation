@@ -188,10 +188,10 @@ MongoClient.connect(
         var confirmPassword = crypto.HmacSHA1(request.body.confirmPassword, keyValue);
 
         if(name != null){
-          if(nickname != null){
-            if(email != null){
-              if(password != null){
-                if(confirmPassword != null){
+          if(nickname != null && nickname.trim()!=""){
+            if(email != null && email.trim()!=""){
+              if(password != null && password.trim()!=""){
+                if(confirmPassword != null && confirmPassword.trim()!=""){
                   if(password.toString() == confirmPassword.toString()){
                     if(validator.isEmail(email.toString())){
                       var insert = {"user": {
