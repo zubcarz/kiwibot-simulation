@@ -33,7 +33,7 @@ MongoClient.connect(
     /**
      * @api {get} /kiwibot-simulation/id/:id User
      * @apiExample {curl} Succes User
-     *  curl -i http://localhost:5000/kiwibot-simulation/id/596517c9f071bd0fc843c869
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/id/596517c9f071bd0fc843c869
      * @apiGroup USER
      * @apiParam {String} id idUser
      * @apiSuccess {Object} user Object user
@@ -66,9 +66,9 @@ MongoClient.connect(
     });
 
     /**
-     * @api {get} /kiwibot-simulation/id/:id/scores User list Scores
+     * @api {get} /kiwibot-simulation/user/id/:id/scores User list Scores
      * @apiExample {curl} Succes User scores
-     *  curl -i http://localhost:5000/kiwibot-simulation/id/596517c9f071bd0fc843c869/scores
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/user/id/596517c9f071bd0fc843c869/scores
      * @apiGroup USER
      * @apiParam {String} id idUser
      * @apiSuccess {scores[]} scores list of scores user
@@ -84,7 +84,7 @@ MongoClient.connect(
      * @apiErrorExample {json} List error
      *    HTTP/1.1 500 Internal Server Error
      */
-    app.get('/kiwibot-simulation/id/:id/scores', function (request,response) {
+    app.get('/kiwibot-simulation/user/id/:id/scores', function (request,response) {
       var objectId = new mongo.ObjectID(request.params.id);
       var projection = {"_id":0,"user":0};
       var querry = {"_id": objectId};
@@ -104,7 +104,7 @@ MongoClient.connect(
     /**
      * @api {get} /kiwibot-simulation/users User List
      * @apiExample {curl} Succes User list
-     *  curl -i http://localhost:5000/kiwibot-simulation/users
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/users
      * @apiGroup USER
      * @apiSuccess {users[]} user list user
      * @apiSuccess {String} user.name personal name of the user
@@ -132,7 +132,7 @@ MongoClient.connect(
     /**
      * @api {get} /kiwibot-simulation/scores/top Scores top
      * @apiExample {curl} Succes Score Top
-     *  curl -i http://localhost:5000/kiwibot-simulation/scores/top
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/scores/top
      * @apiGroup SCORES
      * @apiSuccess {users[]} user list user
      * @apiSuccess {String} user.name personal name of the user
@@ -163,8 +163,8 @@ MongoClient.connect(
 
     /**
      * @api {post} /kiwibot-simulation/user Create User
-     * @apiExample {curl} Succes Score Top
-     *  curl -i http://localhost:5000/kiwibot-simulation/user
+     * @apiExample {curl} Succes Create User
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/user
      * @apiGroup USER
      * @apiParam {String} name name
      * @apiParam {String} nickname nickname
@@ -241,6 +241,72 @@ MongoClient.connect(
           response.status(400).send({"error":"Name is empty"});
           //response.send({"error":"Name is empty"});
         }
+    });
+    /**
+
+     * @api {post} /kiwibot-simulation/user/id/:id/score Insert score
+     * @apiExample {curl} Succes Score Top
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/kiwibot-simulation/user/id/:id/score
+     * @apiGroup SCORES
+     * @apiParam {String} score score
+     * @apiParam {String} level level
+     * @apiSuccess {message} message message
+     * @apiSuccessExample {json} Success
+     *    HTTP/1.1 200 OK
+     *    {
+     *      "message":"Update Score"
+     *     }
+     * @apiErrorExample {json} List error
+     *    HTTP/1.1 500 Internal Server Error
+     */
+    app.post('/kiwibot-simulation/user/id/:id/score', function (request,response) {
+      var score = request.body.score;
+      var level = request.body.level;
+      var objectID = new mongo.ObjectID(request.params.id);
+      var insert = { $addToSet: {"scores": {"score":score, "level":level}}};
+      db.collection('Users').update({ "_id":  objectID},insert,function(error,responseInsert){
+          if(error!=null){
+              response.status(500).send({"error":"DB Error","message":error.message});
+          }else{
+              response.send({"message":"Succes Score Update"});
+          }
+      });
+    });
+
+
+    /**
+     * @api {get} /kiwibot-simulation/user/login User Login
+     * @apiExample {curl} Succes User Login
+     *  curl -i https://afternoon-sea-50972.herokuapp.com/kiwibot-simulation/user/login
+     * @apiGroup USER
+     * @apiParam {String} password password
+     * @apiParam {String} email email
+     * @apiSuccess {users[]} user list user
+     * @apiSuccess {String} user.name personal name of the user
+     * @apiSuccess {String} user.nickname nickname of the user
+     * @apiSuccessExample {json} Success
+     *    HTTP/1.1 200 OK
+     *    [
+     *      "user":{
+     *          "name":"Carlos Zubieta",
+     *          "nickname":"zubcarz",
+     *          "email":"zubcarz@gmail.com"
+     *      }]
+     * @apiErrorExample {json} List error
+     *    HTTP/1.1 500 Internal Server Error
+     */
+    app.post('/kiwibot-simulation/user/login', function (request,response) {
+      var email = request.body.email;
+      var password = crypto.HmacSHA1(request.body.password, keyValue);
+      var projection = {"_id":1,"user.email":1,"user.nickname":1,"user.name":1};
+      var querry = {"user.email":email,"user.password" :password };
+      var cursor =  db.collection('Users').find(querry,projection);
+
+      cursor.toArray(function(err, docs) {
+             assert.equal(null,err);
+             response.send(docs);
+       });
+
     });
 
     app.use(function(request,response){
