@@ -224,7 +224,7 @@ MongoClient.connect(
                               var cursor =  db.collection('Users').find(querry,projection).limit(1);
                               cursor.toArray(function(err, doc) {
                                      assert.equal(null,err);
-                                     response.send(doc);
+                                     response.send(doc[0]);
                                });
                           }
                       });
