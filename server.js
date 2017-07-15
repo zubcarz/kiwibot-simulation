@@ -308,18 +308,31 @@ MongoClient.connect(
      *    HTTP/1.1 500 Internal Server Error
      */
     app.post('/kiwibot-simulation/user/login', function (request,response) {
-      var email = request.body.email;
-      var password = crypto.HmacSHA1(request.body.password, keyValue).toString();
-      var projection = {"_id":1,"user.email":1,"user.nickname":1,"user.name":1};
-      var querry = {"user.email":email,"user.password" :password };
-      var cursor =  db.collection('Users').find(querry,projection);
+        var email = request.body.email;
+        var password = crypto.HmacSHA1(request.body.password, keyValue).toString();
+        var projection = {"_id":1,"user.email":1,"user.nickname":1,"user.name":1};
+        var querry = {"user.email":email,"user.password" :password };
+        var cursor =  db.collection('Users').find(querry,projection);
 
-      cursor.toArray(function(err, docs) {
-             assert.equal(null,err);
-             response.send(docs);
-             console.log(password);
-       });
-
+        if(email != null){
+          if(validator.isEmail(email.toString())){
+            if(password != null){
+                cursor.toArray(function(err, docs) {
+                      if (docs.length == 0){
+                          response.status(400).send({"error":"Invalid credentials"});
+                      }else{
+                         response.send(docs[0]);
+                      }
+                 });
+            }else{
+                response.status(400).send({"error":"Password is Empty"});
+            }
+          }else{
+            response.status(400).send({"error":"Email is Invalid"});
+          }
+        }else{
+          response.status(400).send({"error":"Email is Empty"});
+        }
     });
 
     app.use(function(request,response){
