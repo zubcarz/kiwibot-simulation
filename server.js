@@ -140,13 +140,15 @@ MongoClient.connect(
      * @apiSuccess {int} total_score nickname of the user
      * @apiSuccessExample {json} Success
      *    HTTP/1.1 200 OK
-     *    [{
+     *    {
+     *      "userList" :[{
      *      "user":{
      *          "name":"Carlos Zubieta",
      *          "nickname":"zubcarz"
      *      },
      *      "total_score":300
      *      }]
+     *    }
      * @apiErrorExample {json} List error
      *    HTTP/1.1 500 Internal Server Error
      */
@@ -157,7 +159,7 @@ MongoClient.connect(
 
        cursor.toArray(function(err, docs) {
               assert.equal(null,err);
-              response.send(docs);
+              response.send({"userList" : docs});
         });
     });
 
